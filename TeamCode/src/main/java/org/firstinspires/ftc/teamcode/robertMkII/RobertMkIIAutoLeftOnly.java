@@ -10,15 +10,15 @@ TODO:
 - add more function than moving right
  */
 
-@Autonomous(name = "RobertMkIIAuto")
-public class RobertMkIIAuto extends LinearOpMode {
+@Autonomous(name = "RobertMkIIAutoLeftOnly")
+public class RobertMkIIAutoLeftOnly extends LinearOpMode {
 
     @Override public void runOpMode() throws InterruptedException {
         DriveTrain driveTrain = new DriveTrain(hardwareMap, telemetry);
 
         ElapsedTime e = new ElapsedTime();
         e.reset();
-        telemetry.addLine("Full Autonomous");
+        telemetry.addLine("Left Only Autonomous");
         telemetry.addData("Time elapsed", 0);
         telemetry.addData("Status", "Wait");
         waitForStart();
@@ -27,9 +27,6 @@ public class RobertMkIIAuto extends LinearOpMode {
             if (e.seconds() < 2.5) {
                 telemetry.addData("Status", "Moving Left");
                 driveTrain.tankDrive(0,1,0);
-            } else if (e.seconds() < 6){
-                telemetry.addData("Status", "Moving Right");
-                driveTrain.tankDrive(0,-1,0);
             } else {
                 telemetry.addData("Status", "All Done!");
                 driveTrain.tankDrive(0,0,0);
