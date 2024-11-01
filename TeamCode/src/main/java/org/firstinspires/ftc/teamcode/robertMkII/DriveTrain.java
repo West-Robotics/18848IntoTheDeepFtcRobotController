@@ -17,6 +17,7 @@ public class DriveTrain {
     private DcMotor leftBack;
     private DcMotor rightFront;
     private DcMotor rightBack;
+    /*
     private DcMotor armExtender;
     private CRServo handIntake;
     private Servo rightWrist;
@@ -25,41 +26,43 @@ public class DriveTrain {
     private HandPosition lastWristPos;
     public double dumpPos = 0;
     public double levelPos = 1;
+     */
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetryImport) /* INIT */ {
         telemetry = telemetryImport;
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-
+/*
         armExtender = hardwareMap.get(DcMotor.class, "armExtender");
 
         rightWrist = hardwareMap.get(Servo.class, "rightWrist");
         leftWrist = hardwareMap.get(Servo.class, "leftWrist");
         handIntake = hardwareMap.get(CRServo.class, "handIntake");
-
+*/
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftWrist.setDirection(Servo.Direction.REVERSE);
+//        leftWrist.setDirection(Servo.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        armExtender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        armExtender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+/*
         armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         armExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         wristPos = HandPosition.LEVEL;
         lastWristPos = HandPosition.LEVEL;
+         */
     }
 
     public void tankDrive(double straightSpeed, double strafeSpeed, double rotationSpeed) {
@@ -87,7 +90,7 @@ public class DriveTrain {
         } else { armRotater.setPower(0); }
 
     }
-*/
+
     enum HandPosition {
         DUMP,
         LEVEL
@@ -106,5 +109,5 @@ public class DriveTrain {
             leftWrist.setPosition(levelPos);
             rightWrist.setPosition(dumpPos);
         }
-    }
+    } *Stage/
 }
