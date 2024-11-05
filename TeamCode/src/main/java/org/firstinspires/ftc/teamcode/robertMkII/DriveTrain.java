@@ -42,6 +42,8 @@ public class DriveTrain {
 */
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
 //        leftWrist.setDirection(Servo.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -67,10 +69,10 @@ public class DriveTrain {
 
     public void tankDrive(double straightSpeed, double strafeSpeed, double rotationSpeed) {
 
-        leftFront.setPower(straightSpeed - rotationSpeed - strafeSpeed);
-        leftBack.setPower(straightSpeed - rotationSpeed + strafeSpeed);
-        rightFront.setPower(straightSpeed + rotationSpeed + strafeSpeed);
-        rightBack.setPower(straightSpeed + rotationSpeed - strafeSpeed);
+        leftFront.setPower(straightSpeed + rotationSpeed + strafeSpeed);
+        leftBack.setPower(straightSpeed + rotationSpeed - strafeSpeed);
+        rightFront.setPower(straightSpeed - rotationSpeed - strafeSpeed);
+        rightBack.setPower(straightSpeed - rotationSpeed + strafeSpeed);
 
     }
 /*

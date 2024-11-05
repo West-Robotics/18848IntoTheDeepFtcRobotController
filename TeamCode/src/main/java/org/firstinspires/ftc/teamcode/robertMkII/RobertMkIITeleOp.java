@@ -18,8 +18,8 @@ public class RobertMkIITeleOp extends OpMode {
     @Override
     public void init() {
         drivetrain = new DriveTrain(hardwareMap, telemetry);
-        drivetrain.levelPos = 1;
-        drivetrain.dumpPos = 0;
+//        drivetrain.levelPos = 1;
+//        drivetrain.dumpPos = 0;
     }
 
 
