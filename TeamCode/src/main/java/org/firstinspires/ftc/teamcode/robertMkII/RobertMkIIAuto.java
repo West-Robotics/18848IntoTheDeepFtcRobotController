@@ -20,18 +20,18 @@ public class RobertMkIIAuto extends LinearOpMode {
         e.reset();
         telemetry.addLine("Full Autonomous");
         telemetry.addData("Time elapsed", 0);
-        telemetry.addData("Status", "Wait");
+        telemetry.addData("Status", "Wait for start");
         waitForStart();
         e.reset();
         while (opModeIsActive()) {
-            if (e.seconds() < 2.5) {
+            if (e.seconds() < 0.6) {
                 telemetry.addData("Status", "Moving Left");
                 driveTrain.tankDrive(0,1,0);
-            } else if (e.seconds() < 6){
+            } else if (e.seconds() < 5 && e.seconds() > 0.9){
                 telemetry.addData("Status", "Moving Right");
                 driveTrain.tankDrive(0,-1,0);
             } else {
-                telemetry.addData("Status", "All Done!");
+                telemetry.addData("Status", "Waiting");
                 driveTrain.tankDrive(0,0,0);
             }
             telemetry.addData("Time elapsed", e.seconds());
