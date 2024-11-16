@@ -26,7 +26,7 @@ public class RobertMkIIAutoLeftOnly extends LinearOpMode {
         while (opModeIsActive()) {
             if (e.seconds() < 2.5) {
                 telemetry.addData("Status", "Moving Left");
-                driveTrain.tankDrive(0,1,0);
+                driveTrain.tankDrive(0,-1,0);
             } else {
                 telemetry.addData("Status", "All Done!");
                 driveTrain.tankDrive(0,0,0);

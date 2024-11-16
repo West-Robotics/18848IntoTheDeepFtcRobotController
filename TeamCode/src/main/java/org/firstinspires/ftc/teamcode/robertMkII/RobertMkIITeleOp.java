@@ -18,14 +18,14 @@ public class RobertMkIITeleOp extends OpMode {
     @Override
     public void init() {
         drivetrain = new DriveTrain(hardwareMap, telemetry);
-//        drivetrain.levelPos = 1;
-//        drivetrain.dumpPos = 0;
     }
 
 
     @Override
     public void loop() {
-        if (!gamepad1.left_bumper) {
+        if (gamepad1.right_bumper) {
+            drivetrain.tankDrive(-gamepad1.left_stick_y/4, gamepad1.left_stick_x/4, gamepad1.right_stick_x/4);
+        } else if (gamepad1.left_bumper) {
             drivetrain.tankDrive(-gamepad1.left_stick_y/2, gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
         } else {
             drivetrain.tankDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
