@@ -26,9 +26,9 @@ public class RobertMkIITeleOp extends OpMode {
         if (gamepad1.right_bumper) {
             drivetrain.tankDrive(-gamepad1.left_stick_y/4, gamepad1.left_stick_x/4, gamepad1.right_stick_x/4);
         } else if (gamepad1.left_bumper) {
-            drivetrain.tankDrive(-gamepad1.left_stick_y/2, gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
-        } else {
             drivetrain.tankDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        } else {
+            drivetrain.tankDrive(-gamepad1.left_stick_y/2, gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
         }
     }
 }

@@ -24,7 +24,7 @@ public class RobertMkIIAutoRightOnly extends LinearOpMode {
         waitForStart();
         e.reset();
         while (opModeIsActive()) {
-            if (e.seconds() < 2.5) {
+            if (e.seconds() < 0.5) {
                 telemetry.addData("Status", "Moving Right");
                 driveTrain.tankDrive(0,1,0);
             } else {
