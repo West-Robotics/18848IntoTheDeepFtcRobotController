@@ -24,12 +24,12 @@ public class RobertMkIITeleOp extends OpMode {
     @Override
     public void loop() {
         if (!gamepad1.left_bumper) {
-            drivetrain.tankDrive(-gamepad1.left_stick_y/2, gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
+            drivetrain.tankDrive(-gamepad1.left_stick_y/2, -gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
             drivetrain.moveArm(-gamepad2.left_stick_y/2, -gamepad2.right_stick_y/2);
         } else {
-            drivetrain.tankDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            drivetrain.tankDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
             drivetrain.moveArm(-gamepad2.left_stick_y, -gamepad2.right_stick_y);
         }
-        drivetrain.moveHand(gamepad2.y, gamepad2.left_trigger-gamepad2.right_trigger);
+       // drivetrain.moveHand(gamepad2.y, gamepad2.left_trigger-gamepad2.right_trigger);
     }
 }

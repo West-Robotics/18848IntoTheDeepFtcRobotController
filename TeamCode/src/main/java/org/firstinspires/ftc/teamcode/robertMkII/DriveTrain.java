@@ -20,12 +20,14 @@ public class DriveTrain {
     private DcMotor armExtender;
     private DcMotor armRotater;
     private CRServo handIntake;
+    /*
     private Servo rightWrist;
     private Servo leftWrist;
     private HandPosition wristPos;
     private HandPosition lastWristPos;
     private final double dumpPos = 0;
     private final double levelPos = 1;
+     */
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetryImport) /* INIT */ {
         telemetry = telemetryImport;
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
@@ -36,13 +38,13 @@ public class DriveTrain {
         armExtender = hardwareMap.get(DcMotor.class, "armExtender");
         armRotater = hardwareMap.get(DcMotor.class, "armRotater");
 
-        rightWrist = hardwareMap.get(Servo.class, "rightWrist");
-        leftWrist = hardwareMap.get(Servo.class, "leftWrist");
+      //  rightWrist = hardwareMap.get(Servo.class, "rightWrist");
+      //  leftWrist = hardwareMap.get(Servo.class, "leftWrist");
 //        handIntake = hardwareMap.get(CRServo.class, "handIntake");
 
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftWrist.setDirection(Servo.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        // leftWrist.setDirection(Servo.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -63,8 +65,8 @@ public class DriveTrain {
         armExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armRotater.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        wristPos = HandPosition.LEVEL;
-        lastWristPos = HandPosition.LEVEL;
+      //  wristPos = HandPosition.LEVEL;
+      //  lastWristPos = HandPosition.LEVEL;
     }
 
     public void tankDrive(double straightSpeed, double strafeSpeed, double rotationSpeed) {
@@ -82,6 +84,7 @@ public class DriveTrain {
         // slide extension (difference between fully retracted and fully extended) amount is 96 cm
         // full rotations until extended is 8
         // worm gear is 28:1 or 14:0.5
+        /*
         double extenderRevCount = armExtender.getCurrentPosition() / 537.7;
         double rotationCount = armRotater.getCurrentPosition() / 537.7;
         double armlength = (extenderRevCount * 12.0) + 38.4;
@@ -96,8 +99,14 @@ public class DriveTrain {
             armRotater.setPower(rotateSpeed);
         } else { armRotater.setPower(0); }
 
-    }
+         */
+        armExtender.setPower(extendSpeed);
+        armRotater.setPower(rotateSpeed);
+        telemetry.addData("rotations", armRotater.getCurrentPosition());
+        telemetry.addData("extensions", armExtender.getCurrentPosition());
 
+    }
+/*
     enum HandPosition {
         DUMP,
         LEVEL
@@ -118,5 +127,5 @@ public class DriveTrain {
             leftWrist.setPosition(levelPos);
             rightWrist.setPosition(dumpPos);
         }
-    }
+    } */
 }
