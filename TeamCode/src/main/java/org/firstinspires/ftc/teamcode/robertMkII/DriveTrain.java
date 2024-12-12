@@ -22,7 +22,7 @@ public class DriveTrain {
     private CRServo handIntake;
     private Servo rightWrist;
     private Servo leftWrist;
-   // private HandPosition wristPos;
+    private HandPosition wristPos;
     private double dumpPos = 0;
     private double levelPos = 1;
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetryImport) /* INIT */ {
@@ -34,14 +34,14 @@ public class DriveTrain {
 
         armExtender = hardwareMap.get(DcMotor.class, "armExtender");
         armRotater = hardwareMap.get(DcMotor.class, "armRotater");
-/*
+
         rightWrist = hardwareMap.get(Servo.class, "rightWrist");
         leftWrist = hardwareMap.get(Servo.class, "leftWrist");
         handIntake = hardwareMap.get(CRServo.class, "handIntake");
-*/
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-//        leftWrist.setDirection(Servo.Direction.REVERSE);
+
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftWrist.setDirection(Servo.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -62,7 +62,7 @@ public class DriveTrain {
         armExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armRotater.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-       // wristPos = HandPosition.LEVEL;
+        wristPos = HandPosition.LEVEL;
     }
 
     public void tankDrive(double straightSpeed, double strafeSpeed, double rotationSpeed) {
@@ -105,34 +105,40 @@ public class DriveTrain {
         DUMP,
         LEVEL
     }
-   /*
     public void moveHand(boolean toggleHandPos, double handIntakeSpeed) {
         handIntake.setPower(handIntakeSpeed);
-        HandPosition prevWristPos = wristPos;
         if (toggleHandPos) {
             wristPos = (wristPos == HandPosition.LEVEL) ? HandPosition.DUMP : HandPosition.LEVEL;
+            if (wristPos == HandPosition.DUMP) {
+                leftWrist.setPosition(dumpPos);
+                rightWrist.setPosition(dumpPos);
+            } else if (wristPos == HandPosition.LEVEL) {
+                leftWrist.setPosition(levelPos);
+                rightWrist.setPosition(levelPos);
+            }
         }
         telemetry.addData("WristPos", wristPos);
         telemetry.addData("dumpPos", dumpPos);
         telemetry.addData("levelPos", levelPos);
-        if (wristPos == HandPosition.DUMP) {
-            leftWrist.setPosition(dumpPos);
-            rightWrist.setPosition(dumpPos);
-        } else if (wristPos == HandPosition.LEVEL) {
-            leftWrist.setPosition(levelPos);
-            rightWrist.setPosition(dumpPos);
-        }
+
     }
     public void incrementPos(double levelPosMod, double dumpPosMod) {
         double prevDumpPos = dumpPos;
         double prevLevelPos = levelPos;
         dumpPos += dumpPosMod;
-        if (dumpPos > 1.0 || dumpPos < 0) {
+        if (dumpPos > 1.0 || dumpPos < -1.0) {
             dumpPos = prevDumpPos;
         }
         levelPos += levelPosMod;
-        if (levelPos > 1.0 || levelPos < 0) {
+        if (levelPos > 1.0 || levelPos < -1.0) {
             levelPos = prevLevelPos;
         }
-    }*/
+        if (levelPos != prevLevelPos && wristPos == HandPosition.LEVEL) {
+            leftWrist.setPosition(dumpPos);
+            rightWrist.setPosition(dumpPos);
+        } if (dumpPos != prevDumpPos && wristPos == HandPosition.DUMP) {
+            leftWrist.setPosition(levelPos);
+            rightWrist.setPosition(levelPos);
+        }
+    }
 }
