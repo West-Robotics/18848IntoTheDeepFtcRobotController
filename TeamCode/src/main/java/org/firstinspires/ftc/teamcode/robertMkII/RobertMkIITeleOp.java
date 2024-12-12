@@ -8,28 +8,56 @@ TODO:
 */
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp(name = "RobertMkIITeleOp")
 public class RobertMkIITeleOp extends OpMode {
+    private Gamepad currentGamepad1;
+    private Gamepad currentGamepad2;
 
+    private Gamepad previousGamepad1;
+    private Gamepad previousGamepad2;
     private DriveTrain drivetrain;
 
     @Override
     public void init() {
         drivetrain = new DriveTrain(hardwareMap, telemetry);
+        currentGamepad1 = new Gamepad();
+        currentGamepad2 = new Gamepad();
+
+        previousGamepad1 = new Gamepad();
+        previousGamepad2 = new Gamepad();
     }
 
 
     @Override
     public void loop() {
-        if (!gamepad1.left_bumper) {
-            drivetrain.tankDrive(-gamepad1.left_stick_y/2, -gamepad1.left_stick_x/2, gamepad1.right_stick_x/2);
-            drivetrain.moveArm(-gamepad2.left_stick_y/2, -gamepad2.right_stick_y/2);
+        previousGamepad1.copy(currentGamepad1);
+        previousGamepad2.copy(currentGamepad2);
+        currentGamepad1.copy(gamepad1);
+        currentGamepad2.copy(gamepad2);
+        if (!currentGamepad1.left_bumper) {
+            drivetrain.tankDrive(-currentGamepad1.left_stick_y / 2, -currentGamepad1.left_stick_x / 2, currentGamepad1.right_stick_x / 2);
+            drivetrain.moveArm(-currentGamepad2.left_stick_y / 2, -currentGamepad2.right_stick_y / 2);
         } else {
-            drivetrain.tankDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x);
-            drivetrain.moveArm(-gamepad2.left_stick_y, -gamepad2.right_stick_y);
+            drivetrain.tankDrive(-currentGamepad1.left_stick_y, -currentGamepad1.left_stick_x, currentGamepad1.right_stick_x);
+            drivetrain.moveArm(-currentGamepad2.left_stick_y, -currentGamepad2.right_stick_y);
+        }/*
+        if (currentGamepad2.y && !previousGamepad2.y) {
+            drivetrain.moveHand(true, currentGamepad2.left_trigger - currentGamepad2.right_trigger);
+        } else {
+            drivetrain.moveHand(false, currentGamepad2.left_trigger - currentGamepad2.right_trigger);
         }
-       // drivetrain.moveHand(gamepad2.y, gamepad2.left_trigger-gamepad2.right_trigger);
+        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
+            drivetrain.incrementPos(0.1, 0);
+        } else if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
+            drivetrain.incrementPos(-0.1, 0);
+        } if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right) {
+            drivetrain.incrementPos(0, 0.1);
+        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left) {
+            drivetrain.incrementPos(0, -0.1);
+        }
+*/
     }
 }

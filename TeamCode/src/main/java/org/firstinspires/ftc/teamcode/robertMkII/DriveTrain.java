@@ -20,14 +20,11 @@ public class DriveTrain {
     private DcMotor armExtender;
     private DcMotor armRotater;
     private CRServo handIntake;
-    /*
     private Servo rightWrist;
     private Servo leftWrist;
-    private HandPosition wristPos;
-    private HandPosition lastWristPos;
-    private final double dumpPos = 0;
-    private final double levelPos = 1;
-     */
+   // private HandPosition wristPos;
+    private double dumpPos = 0;
+    private double levelPos = 1;
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetryImport) /* INIT */ {
         telemetry = telemetryImport;
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
@@ -37,14 +34,14 @@ public class DriveTrain {
 
         armExtender = hardwareMap.get(DcMotor.class, "armExtender");
         armRotater = hardwareMap.get(DcMotor.class, "armRotater");
-
-      //  rightWrist = hardwareMap.get(Servo.class, "rightWrist");
-      //  leftWrist = hardwareMap.get(Servo.class, "leftWrist");
-//        handIntake = hardwareMap.get(CRServo.class, "handIntake");
-
+/*
+        rightWrist = hardwareMap.get(Servo.class, "rightWrist");
+        leftWrist = hardwareMap.get(Servo.class, "leftWrist");
+        handIntake = hardwareMap.get(CRServo.class, "handIntake");
+*/
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        // leftWrist.setDirection(Servo.Direction.REVERSE);
+//        leftWrist.setDirection(Servo.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -65,8 +62,7 @@ public class DriveTrain {
         armExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armRotater.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-      //  wristPos = HandPosition.LEVEL;
-      //  lastWristPos = HandPosition.LEVEL;
+       // wristPos = HandPosition.LEVEL;
     }
 
     public void tankDrive(double straightSpeed, double strafeSpeed, double rotationSpeed) {
@@ -77,7 +73,6 @@ public class DriveTrain {
         rightBack.setPower(straightSpeed + rotationSpeed - strafeSpeed);
 
     }
-
     public void moveArm(double extendSpeed, double rotateSpeed) {
         // motor uses 537.7 ppr
         // diameter of pulley gear is 120mm
@@ -98,34 +93,46 @@ public class DriveTrain {
         if ((rotationCount < 13.5 && rotateSpeed < 0) || (rotationCount > 0.2 && rotateSpeed > 0 && botlength < 100)) {
             armRotater.setPower(rotateSpeed);
         } else { armRotater.setPower(0); }
+        */
 
-         */
         armExtender.setPower(extendSpeed);
         armRotater.setPower(rotateSpeed);
         telemetry.addData("rotations", armRotater.getCurrentPosition());
         telemetry.addData("extensions", armExtender.getCurrentPosition());
 
     }
-/*
     enum HandPosition {
         DUMP,
         LEVEL
     }
+   /*
     public void moveHand(boolean toggleHandPos, double handIntakeSpeed) {
-        //handIntake.setPower(handIntakeSpeed);
+        handIntake.setPower(handIntakeSpeed);
         HandPosition prevWristPos = wristPos;
         if (toggleHandPos) {
-            wristPos = (lastWristPos == HandPosition.LEVEL) ? HandPosition.DUMP : HandPosition.LEVEL;
-        } else {
-            lastWristPos = wristPos;
+            wristPos = (wristPos == HandPosition.LEVEL) ? HandPosition.DUMP : HandPosition.LEVEL;
         }
         telemetry.addData("WristPos", wristPos);
-        if (wristPos == HandPosition.DUMP && prevWristPos != HandPosition.DUMP) {
+        telemetry.addData("dumpPos", dumpPos);
+        telemetry.addData("levelPos", levelPos);
+        if (wristPos == HandPosition.DUMP) {
             leftWrist.setPosition(dumpPos);
             rightWrist.setPosition(dumpPos);
-        } else if (wristPos == HandPosition.LEVEL && prevWristPos != HandPosition.LEVEL) {
+        } else if (wristPos == HandPosition.LEVEL) {
             leftWrist.setPosition(levelPos);
             rightWrist.setPosition(dumpPos);
         }
-    } */
+    }
+    public void incrementPos(double levelPosMod, double dumpPosMod) {
+        double prevDumpPos = dumpPos;
+        double prevLevelPos = levelPos;
+        dumpPos += dumpPosMod;
+        if (dumpPos > 1.0 || dumpPos < 0) {
+            dumpPos = prevDumpPos;
+        }
+        levelPos += levelPosMod;
+        if (levelPos > 1.0 || levelPos < 0) {
+            levelPos = prevLevelPos;
+        }
+    }*/
 }
