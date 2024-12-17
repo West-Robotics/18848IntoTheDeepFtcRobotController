@@ -22,9 +22,9 @@ public class DriveTrain {
     private CRServo handIntake;
     private Servo rightWrist;
     private Servo leftWrist;
-    private HandPosition wristPos;
-    private double dumpPos = 0;
-    private double levelPos = 1;
+    private HandPosition wristPos; 
+    private double dumpPos = 1;
+    private double levelPos = 0.7;
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetryImport) /* INIT */ {
         telemetry = telemetryImport;
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
@@ -79,24 +79,21 @@ public class DriveTrain {
         // slide extension (difference between fully retracted and fully extended) amount is 96 cm
         // full rotations until extended is 8
         // worm gear is 28:1 or 14:0.5
-        /*
-        double extenderRevCount = armExtender.getCurrentPosition() / 537.7;
-        double rotationCount = armRotater.getCurrentPosition() / 537.7;
-        double armlength = (extenderRevCount * 12.0) + 38.4;
-        double armangle = rotationCount * (90.0/14.0);
-        double botlength = armlength * Math.sin(Math.toRadians(armangle));
 
-
-        if ((extenderRevCount < 7.8 && extendSpeed > 0 && botlength < 100) || (extenderRevCount > 0.2 && extendSpeed < 0)) {
+        double rotPos = armRotater.getCurrentPosition();
+        double extPos = armExtender.getCurrentPosition();
+        if (rotPos < 1400 && extPos < -1000) {
+            armExtender.setPower(0.6);
+        } else if (rotPos < 1000){
             armExtender.setPower(extendSpeed);
-        } else { armExtender.setPower(0); }
-        if ((rotationCount < 13.5 && rotateSpeed < 0) || (rotationCount > 0.2 && rotateSpeed > 0 && botlength < 100)) {
-            armRotater.setPower(rotateSpeed);
-        } else { armRotater.setPower(0); }
-        */
+        } else {
+            armExtender.setPower(extendSpeed-0.1);
+        }
 
-        armExtender.setPower(extendSpeed);
         armRotater.setPower(rotateSpeed);
+        telemetry.addData("extensionForce", extendSpeed-0.1);
+        telemetry.addData("rotationForce", rotateSpeed);
+
         telemetry.addData("rotations", armRotater.getCurrentPosition());
         telemetry.addData("extensions", armExtender.getCurrentPosition());
 
@@ -112,7 +109,7 @@ public class DriveTrain {
             if (wristPos == HandPosition.DUMP) {
                 leftWrist.setPosition(dumpPos);
                 rightWrist.setPosition(dumpPos);
-            } else if (wristPos == HandPosition.LEVEL) {
+            } else {
                 leftWrist.setPosition(levelPos);
                 rightWrist.setPosition(levelPos);
             }
@@ -140,5 +137,15 @@ public class DriveTrain {
             leftWrist.setPosition(levelPos);
             rightWrist.setPosition(levelPos);
         }
+    }
+    public void resetEncoder(boolean extender, boolean rotator) {
+       if (extender) {
+           armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+           armExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       } else if (rotator) {
+           armRotater.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+           armRotater.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+       }
     }
 }
