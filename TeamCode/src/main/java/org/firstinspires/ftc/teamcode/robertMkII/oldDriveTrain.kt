@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 
 // for controlling the robot
 
-class DriveTrain(hardwareMap: HardwareMap, private val telemetry: Telemetry) {
+class OldDriveTrain(hardwareMap: HardwareMap, private val telemetry: Telemetry) {
     private val leftFront: DcMotor = hardwareMap.get(DcMotor::class.java, "leftFront")
     private val leftBack: DcMotor = hardwareMap.get(DcMotor::class.java, "leftBack")
     private val rightFront: DcMotor = hardwareMap.get(DcMotor::class.java, "rightFront")
