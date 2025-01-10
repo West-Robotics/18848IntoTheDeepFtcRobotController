@@ -9,7 +9,7 @@ class Intake(hardwareMap: HardwareMap) {
     private val wrist = MkServo(hardwareMap, "wrist", MkServo.ModelPWM.GOBILDA_SPEED)
     private val spinner = MkCRServo(hardwareMap, "spinner", MkCRServo.ModelPWM.CR_GOBILDA_SPEED, DcMotorSimple.Direction.FORWARD)
 
-    private var _wristPos = HandPosition.DUMMY
+    private lateinit var _wristPos: HandPosition
     var wristPos: HandPosition
         get() = _wristPos
         set(value: HandPosition) = if (value.pos != wrist.getPosition()) {
@@ -18,7 +18,6 @@ class Intake(hardwareMap: HardwareMap) {
         } else Unit
 
     enum class HandPosition(val pos: Double) {
-        DUMMY(0.5),
         INTAKE(0.33),
         OUTTAKE(0.65)
     }
