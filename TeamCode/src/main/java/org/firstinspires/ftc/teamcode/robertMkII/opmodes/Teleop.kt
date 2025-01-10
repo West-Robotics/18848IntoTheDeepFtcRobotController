@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.robertMkII.opmodes
 
+import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.robertMkII.opmodes.constants.extenderTimeLimit
+import org.firstinspires.ftc.teamcode.robertMkII.opmodes.constants.rotatorTimeLimit
+import org.firstinspires.ftc.teamcode.robertMkII.opmodes.constants.topExtensionLimit
+import org.firstinspires.ftc.teamcode.robertMkII.opmodes.constants.topRotationLimit
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Extender
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Intake
@@ -15,15 +20,18 @@ TODO:
 - time extender?
 - ftcDashboard
 - check intake speeds/dirs
-*/
 
-@TeleOp(name = "MkTele")
-class Teleop: LinearOpMode() {
+ */
 
+object constants {
     var topExtensionLimit = 1200
     var topRotationLimit = 2000
     var extenderTimeLimit = 1.0
     var rotatorTimeLimit = 0.75
+}
+@TeleOp(name = "MkTele")
+class Teleop: LinearOpMode() {
+
     val er = ElapsedTime()
     val ex = ElapsedTime()
 
