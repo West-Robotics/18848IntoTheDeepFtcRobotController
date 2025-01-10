@@ -18,7 +18,7 @@ class Intake(hardwareMap: HardwareMap) {
         } else Unit
 
     enum class HandPosition(val pos: Double) {
-        DUMMY(0.5),
+        DUMMY(0.5), //just for start, value doesn't matter
         INTAKE(0.33),
         OUTTAKE(0.65)
     }

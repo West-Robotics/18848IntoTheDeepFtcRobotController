@@ -18,14 +18,13 @@ TODO:
 
  */
 
-@Config
 @TeleOp(name = "MkTele")
 class Teleop: LinearOpMode() {
 
-    @JvmField var topExtensionLimit = 1200
-    @JvmField var topRotationLimit = 2000
-    @JvmField var extenderTimeLimit = 1.0
-    @JvmField var rotatorTimeLimit = 0.75
+    var topExtensionLimit = 1200
+    var topRotationLimit = 2000
+    var extenderTimeLimit = 1.0
+    var rotatorTimeLimit = 0.75
     val er = ElapsedTime()
     val ex = ElapsedTime()
 
