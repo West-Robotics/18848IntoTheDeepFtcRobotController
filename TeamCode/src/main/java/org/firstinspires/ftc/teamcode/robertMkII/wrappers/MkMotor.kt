@@ -26,6 +26,7 @@ class MkMotor(
     fun write() { motor.power = effort }
 
     init {
+        motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         motor.direction = dir
         motor.zeroPowerBehavior = zpb

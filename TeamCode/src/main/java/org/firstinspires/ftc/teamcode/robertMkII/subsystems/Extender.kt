@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.robertMkII.wrappers.MkMotor
 class Extender(hardwareMap: HardwareMap) {
     val kp = 1.5
 
-    private val motor = MkMotor(hardwareMap, "extender", DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE)
-    private val encoder = MkEncoder(hardwareMap, "extender", DcMotorSimple.Direction.FORWARD, 537.7)
+    private val motor = MkMotor(hardwareMap, "extender", DcMotorSimple.Direction.REVERSE, DcMotor.ZeroPowerBehavior.BRAKE)
+    private val encoder = MkEncoder(hardwareMap, "extender", DcMotorSimple.Direction.REVERSE, 537.7)
 
     fun setEffort(power: Double) {
         motor.effort = power

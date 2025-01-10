@@ -3,21 +3,27 @@ package org.firstinspires.ftc.teamcode.robertMkII.opmodes
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Extender
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Intake
 import org.firstinspires.ftc.teamcode.robertMkII.subsystems.Rotator
 import kotlin.math.abs
 
+/*
+TODO:
+- time extender?
+- ftcDashboard
 
-
+ */
 
 
 @TeleOp(name = "MkTele")
 class Teleop: LinearOpMode() {
 
-    val topExtensionLimit = 1200.0
-    val topRotationLimit = 1200.0
+    var topExtensionLimit = 1200
+    var topRotationLimit = 2000
+    val e:ElapsedTime = ElapsedTime()
 
     override fun runOpMode() {
         val previousGamepad1 = Gamepad()
@@ -32,10 +38,13 @@ class Teleop: LinearOpMode() {
 
         var targetExtPos = 0.0
         var targetRotPos = 0.0
-        var manualExt = false
+        var manualExt = true
         var manualRot = false
+        var rotOverride = false
+
 
         waitForStart()
+        intake.wristPos = Intake.HandPosition.LEVEL
         while (opModeIsActive()) {
             previousGamepad1.copy(currentGamepad1)
             previousGamepad2.copy(currentGamepad2)
@@ -52,14 +61,14 @@ class Teleop: LinearOpMode() {
 
            //extension
             if (currentGamepad2.b && !previousGamepad2.b) {
-               targetExtPos = if (targetExtPos > 0.0) 0.0 else topExtensionLimit
+               targetExtPos = if (targetExtPos > 0.0) -1.0 else topExtensionLimit.toDouble()
             }
-            if (currentGamepad2.start && !previousGamepad2.start) {
+            if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
                manualExt = !manualExt
             }
-            if (abs(extender.getEffort()) > 0.25 && extender.getVelocity() < 100) {
-                if (extender.getEffort() >0) {
-                    extender.resetEncoder(topExtensionLimit.toInt())
+            if (abs(extender.getEffort()) > 0.85 && extender.getVelocity() < 10) {
+                if (extender.getEffort() <0) {
+                    topExtensionLimit = extender.getTicks()
                 } else {
                     extender.resetEncoder(0)
                 }
@@ -71,31 +80,34 @@ class Teleop: LinearOpMode() {
                 if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down) {
                     extender.resetEncoder()
                 } else if (currentGamepad2.dpad_up && !previousGamepad2.dpad_up) {
-                    extender.resetEncoder(topExtensionLimit.toInt())
+                    extender.resetEncoder(topExtensionLimit)
                 }
             }
             extender.write()
 
             //rotation
             if (currentGamepad2.a && !previousGamepad2.a) {
-                targetRotPos = if (targetRotPos >0.0) 0.0 else topRotationLimit
+                //targetRotPos = if (targetRotPos >0.0) 0.0 else topRotationLimit.toDouble()
+                targetRotPos = if (targetRotPos >0.0) -1.0 else 1.0
+                rotOverride = false
+                e.reset()
             }
             if (currentGamepad2.back && !previousGamepad2.back) {
                 manualRot = !manualRot
             }
-            if (abs(rotator.getEffort()) > 0.25 && rotator.getVelocity() < 100) {
-                if (rotator.getEffort() >0) {
-                    rotator.resetEncoder(topExtensionLimit.toInt())
-                } else {
-                    rotator.resetEncoder()
-                }
+            if ((abs(rotator.getEffort()) == 1.0 && abs(rotator.getVelocity()) < 2000.0 && e.seconds() >= 0.3) || e.seconds() >= 0.75) {
+                rotator.setEffort(0.0)
+                rotOverride = true
             }
             if (!manualRot) {
-                rotator.runToPos(targetRotPos, rotator.getTicks().toDouble())
+                if (!rotOverride){
+                    //rotator.runToPos(targetRotPos, rotator.getTicks().toDouble())
+                    rotator.setEffort(targetRotPos)
+                }
             } else {
-                rotator.setEffort(-currentGamepad2.right_stick_y.toDouble())
+                rotator.setEffort(currentGamepad2.right_stick_y.toDouble())
                 if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
-                    rotator.resetEncoder(topRotationLimit.toInt())
+                    topRotationLimit = rotator.getTicks()
                 } else if (currentGamepad2.dpad_right && !previousGamepad2.dpad_right) {
                     rotator.resetEncoder()
                 }
@@ -112,6 +124,14 @@ class Teleop: LinearOpMode() {
 
             telemetry.addData("extensions", extender.getTicks())
             telemetry.addData("rotations", rotator.getTicks())
+            telemetry.addData("Top Extension Limit", topExtensionLimit)
+            telemetry.addData("Top Rotation Limit", topRotationLimit)
+            telemetry.addData("Extension force", extender.getEffort())
+            telemetry.addData("Rotation force", rotator.getEffort())
+            telemetry.addData("Wrist Position", intake.wristPos)
+            telemetry.addData("Extender tickV", extender.getVelocity())
+            telemetry.addData("Rotator tickV", rotator.getVelocity())
+            telemetry.addData("e", e.seconds())
             telemetry.update()
         }
     }
