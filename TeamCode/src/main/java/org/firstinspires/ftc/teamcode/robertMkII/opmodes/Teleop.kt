@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robertMkII.opmodes
 
+import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -17,12 +18,12 @@ TODO:
 
  */
 
-
+@Config
 @TeleOp(name = "MkTele")
 class Teleop: LinearOpMode() {
 
-    var topExtensionLimit = 1200
-    var topRotationLimit = 2000
+    @JvmField var topExtensionLimit = 1200
+    @JvmField var topRotationLimit = 2000
     val e:ElapsedTime = ElapsedTime()
 
     override fun runOpMode() {
