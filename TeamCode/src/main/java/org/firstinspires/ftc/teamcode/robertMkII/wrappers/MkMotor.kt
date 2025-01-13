@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import kotlin.math.abs
 
 class MkMotor(
@@ -24,6 +25,7 @@ class MkMotor(
         } else Unit
 
     fun write() { motor.power = effort }
+    fun getCurrent() = motor.getCurrent(CurrentUnit.AMPS)
 
     init {
         motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER

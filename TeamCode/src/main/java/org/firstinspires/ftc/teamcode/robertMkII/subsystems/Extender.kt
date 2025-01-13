@@ -35,4 +35,5 @@ class Extender(hardwareMap: HardwareMap) {
     fun getTicks() = encoder.ticks
     fun getRevs() = encoder.revs
     fun getVelocity() = encoder.tickV
+    fun getCurrent() = motor.getCurrent()
 }

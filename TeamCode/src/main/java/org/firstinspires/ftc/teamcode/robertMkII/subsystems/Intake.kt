@@ -1,9 +1,15 @@
 package org.firstinspires.ftc.teamcode.robertMkII.subsystems
 
+import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.robertMkII.wrappers.MkCRServo
 import org.firstinspires.ftc.teamcode.robertMkII.wrappers.MkServo
+
+@Config
+object WristConstants {
+    @JvmField var dummyPos = 0.0
+}
 
 class Intake(hardwareMap: HardwareMap) {
     private val wrist = MkServo(hardwareMap, "wrist", MkServo.ModelPWM.GOBILDA_SPEED)
@@ -17,8 +23,10 @@ class Intake(hardwareMap: HardwareMap) {
             wrist.position(value.pos)
         } else Unit
 
+
     enum class HandPosition(val pos: Double) {
-        INTAKE(0.33),
+        DUMMY(WristConstants.dummyPos),
+        INTAKE(0.34),
         OUTTAKE(0.65)
     }
 
